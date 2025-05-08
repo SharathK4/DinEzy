@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <!-- Central Food Image -->
+    <ImageView
+        android:id="@+id/foodImage"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/pizza"
+        android:scaleType="fitCenter" />
+
+    <!-- Hand gesture icons around the central image -->
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/foodImage"
+        android:layout_alignStart="@id/foodImage"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_hand_point" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignTop="@id/foodImage"
+        android:layout_toStartOf="@id/foodImage"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="30dp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_hand_grab" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignBottom="@id/foodImage"
+        android:layout_toStartOf="@id/foodImage"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="20dp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_hand_grab" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_above="@id/foodImage"
+        android:layout_toEndOf="@id/foodImage"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="40dp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_thumbs_up" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/foodImage"
+        android:layout_toEndOf="@id/foodImage"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:alpha="0.3"
+        android:src="@drawable/ic_hand_point" />
+
+</RelativeLayout> 

@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FF5722">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:src="@drawable/fries"
+        android:layout_width="233dp"
+        android:layout_height="340dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/fries"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.222" />
 
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="serif"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/italiana"
         android:text="Taste the happiness,\nsavor the moment!"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,21 +38,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitle">
+        app:layout_constraintTop_toBottomOf="@+id/textTitle"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="🍟"
-            android:textSize="40sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="❤️"
-            android:textSize="40sp" />
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout> 
+</androidx.constraintlayout.widget.ConstraintLayout>

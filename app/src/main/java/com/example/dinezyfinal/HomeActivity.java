@@ -3,25 +3,25 @@ package com.example.dinezyfinal;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements PopularFoodAdapter.OnFoodItemClickListener {
 
     private ViewPager2 bannerViewPager;
     private RecyclerView popularRecyclerView;
@@ -36,7 +36,7 @@ public class HomeActivity extends AppCompatActivity {
 
         initViews();
         setupBanner();
-        setupFoodItems();
+        setupPopularFoods();
         setupListeners();
     }
 
@@ -54,7 +54,30 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void setupBanner() {
-        // In a real app, you would set up a banner adapter with real data
+        // Banner food images (resource IDs)
+        List<Integer> bannerImages = Arrays.asList(
+                R.drawable.pizza,
+                R.drawable.burger,
+                R.drawable.fries,
+                R.drawable.salad,
+                R.drawable.pasta
+        );
+
+        // Set up banner adapter
+        BannerAdapter bannerAdapter = new BannerAdapter(bannerImages);
+        bannerViewPager.setAdapter(bannerAdapter);
+        
+        // Add page transformer for better visual effects
+        CompositePageTransformer transformer = new CompositePageTransformer();
+        transformer.addTransformer(new MarginPageTransformer(40));
+        transformer.addTransformer((page, position) -> {
+            float r = 1 - Math.abs(position);
+            page.setScaleY(0.85f + r * 0.15f);
+        });
+        
+        bannerViewPager.setPageTransformer(transformer);
+        
+        // Register page change callback to update dots
         bannerViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -64,17 +87,20 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
-    private void setupFoodItems() {
-        // Create mock food data
-        List<FoodItem> foodItems = new ArrayList<>();
-        foodItems.add(new FoodItem("French Fries", "$14.50", "fries"));
-        foodItems.add(new FoodItem("Pizza", "$14.50", "pizza"));
-        foodItems.add(new FoodItem("Salad", "$14.50", "salad"));
-        foodItems.add(new FoodItem("Pasta", "$14.50", "pasta"));
+    private void setupPopularFoods() {
+        // Create popular food items list
+        List<FoodItem> popularFoods = new ArrayList<>();
+        popularFoods.add(new FoodItem("Pepperoni Pizza", "$14.50", "pizza"));
+        popularFoods.add(new FoodItem("Cheese Burger", "$12.99", "burger"));
+        popularFoods.add(new FoodItem("French Fries", "$5.99", "fries"));
+        popularFoods.add(new FoodItem("Caesar Salad", "$8.50", "salad"));
+        popularFoods.add(new FoodItem("Pasta Carbonara", "$13.99", "pasta"));
 
-        // Set up RecyclerView
-        FoodAdapter adapter = new FoodAdapter(foodItems);
-        popularRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        // Set up RecyclerView with horizontal layout
+        PopularFoodAdapter adapter = new PopularFoodAdapter(popularFoods, this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL, false);
+        popularRecyclerView.setLayoutManager(layoutManager);
         popularRecyclerView.setAdapter(adapter);
     }
 
@@ -133,83 +159,12 @@ public class HomeActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void navigateToFoodDetail(FoodItem foodItem) {
+    @Override
+    public void onFoodItemClick(FoodItem foodItem) {
         Intent intent = new Intent(HomeActivity.this, FoodDetailActivity.class);
         intent.putExtra("name", foodItem.getName());
         intent.putExtra("price", foodItem.getPrice());
         intent.putExtra("image", foodItem.getImage());
         startActivity(intent);
-    }
-
-    // Model class for food items
-    static class FoodItem {
-        private final String name;
-        private final String price;
-        private final String image;
-
-        FoodItem(String name, String price, String image) {
-            this.name = name;
-            this.price = price;
-            this.image = image;
-        }
-
-        String getName() {
-            return name;
-        }
-
-        String getPrice() {
-            return price;
-        }
-
-        String getImage() {
-            return image;
-        }
-    }
-
-    // Adapter for food items
-    class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
-
-        private final List<FoodItem> foodItems;
-
-        FoodAdapter(List<FoodItem> foodItems) {
-            this.foodItems = foodItems;
-        }
-
-        @NonNull
-        @Override
-        public FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_food, parent, false);
-            return new FoodViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull FoodViewHolder holder, int position) {
-            FoodItem foodItem = foodItems.get(position);
-            holder.foodName.setText(foodItem.getName());
-            holder.foodPrice.setText(foodItem.getPrice());
-            
-            // In a real app, you would load images from resources or URLs
-            // For simplicity, we're not handling images here
-
-            holder.itemView.setOnClickListener(v -> navigateToFoodDetail(foodItem));
-        }
-
-        @Override
-        public int getItemCount() {
-            return foodItems.size();
-        }
-
-        class FoodViewHolder extends RecyclerView.ViewHolder {
-            TextView foodName, foodPrice;
-            ImageView foodImage;
-
-            FoodViewHolder(@NonNull View itemView) {
-                super(itemView);
-                foodName = itemView.findViewById(R.id.foodName);
-                foodPrice = itemView.findViewById(R.id.foodPrice);
-                foodImage = itemView.findViewById(R.id.foodImage);
-            }
-        }
     }
 } 

@@ -1,32 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4CAF50">
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="280dp"
-        android:layout_height="280dp"
-        android:src="@drawable/salad"
+        android:layout_width="259dp"
+        android:layout_height="272dp"
         android:scaleType="centerCrop"
+        android:src="@drawable/salad"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.289" />
 
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="serif"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/italiana"
         android:text="Great food, great\nmood—every time!"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="30sp"
+        android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,6 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textTitle">
@@ -44,13 +46,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="😊"
-            android:textSize="40sp" />
+            android:textSize="30sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="🥗"
-            android:textSize="40sp" />
+            android:textSize="30sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout> 

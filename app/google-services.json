@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "981268814521",
+    "project_id": "dinezyfinal",
+    "storage_bucket": "dinezyfinal.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:981268814521:android:5e2673404498f131a41968",
+        "android_client_info": {
+          "package_name": "com.example.dinezyfinal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "981268814521-ipmc7rtorm30ee421v5bvfridonqv4fd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dinezyfinal",
+            "certificate_hash": "efa16924a8078aeb67e04ff6cbb8059717c654db"
+          }
+        },
+        {
+          "client_id": "981268814521-7oj6fkgc6a90hlio37jfqbhatkrdeef6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB4HRgUgqowadmW-SycDCtynA9I9mZQd1Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "981268814521-7oj6fkgc6a90hlio37jfqbhatkrdeef6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

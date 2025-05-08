@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Onboarding text style with Italiana font -->
+    <style name="TextAppearance.Dinezy.Onboarding" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/italiana</item>
+        <item name="fontFamily">@font/italiana</item>
+    </style>
+
+    <!-- Regular text style with Instrument Sans font -->
+    <style name="TextAppearance.Dinezy.Body" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/instrument_sans</item>
+        <item name="fontFamily">@font/instrument_sans</item>
+    </style>
+    
+    <style name="TextAppearance.Dinezy.Body.Bold" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/instrument_sans_bold</item>
+        <item name="fontFamily">@font/instrument_sans_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Alternative text style with Albert Sans font -->
+    <style name="TextAppearance.Dinezy.Alt" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/albert_sans</item>
+        <item name="fontFamily">@font/albert_sans</item>
+    </style>
+    
+    <style name="TextAppearance.Dinezy.Alt.Bold" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:fontFamily">@font/albert_sans_bold</item>
+        <item name="fontFamily">@font/albert_sans_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    
+    <!-- Button styles -->
+    <style name="Button.Dinezy.Transparent" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_transparent</item>
+        <item name="android:fontFamily">@font/instrument_sans</item>
+        <item name="android:textColor">#000000</item>
+    </style>
+    
+    <style name="Button.Dinezy.Filled" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button_filled</item>
+        <item name="android:fontFamily">@font/instrument_sans</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    
+    <!-- Logo text style with Ephesis font -->
+    <style name="TextAppearance.Dinezy.Logo" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/ephesis_regular</item>
+        <item name="fontFamily">@font/ephesis_regular</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">48sp</item>
+        <item name="android:rotation">5</item>
+    </style>
+    
+    <!-- Transparent System Bars -->
+    <style name="ThemeOverlay.Dinezy.TransparentBars" parent="">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+    </style>
+</resources> 

@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">DinezyFinal</string>
+    <!-- This value should be replaced with the actual Web client ID from your Firebase project -->
+    <string name="default_web_client_id">1:981268814521:web:b378b1e3083f9d54a41968</string>
+    <string name="app_logo">Dinezy Logo</string>
+    <string name="app_tagline">Order food from your favorite restaurants</string>
 </resources>
