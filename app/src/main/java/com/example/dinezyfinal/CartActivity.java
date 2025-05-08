@@ -17,12 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.text.DecimalFormat;
 
 public class CartActivity extends AppCompatActivity {
 
     private RecyclerView cartRecyclerView;
     private Button paymentButton;
     private TextView totalPrice;
+    private List<CartItem> cartItems;
+    private CartAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +45,13 @@ public class CartActivity extends AppCompatActivity {
 
     private void setupCartItems() {
         // Create mock cart data
-        List<CartItem> cartItems = new ArrayList<>();
-        cartItems.add(new CartItem("French Fries", "$14.50", 1, "fries"));
-        cartItems.add(new CartItem("Pizza", "$14.50", 1, "pizza"));
-        cartItems.add(new CartItem("Salad", "$14.50", 1, "salad"));
+        cartItems = new ArrayList<>();
+        cartItems.add(new CartItem("French Fries", 4.50, 1, "fries"));
+        cartItems.add(new CartItem("Pizza", 6.75, 1, "pizza"));
+        cartItems.add(new CartItem("Salad", 3.25, 1, "salad"));
 
         // Set up RecyclerView
-        CartAdapter adapter = new CartAdapter(cartItems);
+        adapter = new CartAdapter(cartItems);
         cartRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         cartRecyclerView.setAdapter(adapter);
 
@@ -61,8 +64,14 @@ public class CartActivity extends AppCompatActivity {
     }
 
     private void updateTotal() {
-        // In a real app, you would calculate the actual total
-        totalPrice.setText("$ 14.50");
+        double total = 0.0;
+        
+        for (CartItem item : cartItems) {
+            total += item.getTotalPrice();
+        }
+        
+        DecimalFormat df = new DecimalFormat("0.00");
+        totalPrice.setText("$ " + df.format(total));
     }
 
     private void navigateToOrderConfirmation() {
@@ -73,11 +82,11 @@ public class CartActivity extends AppCompatActivity {
     // Model class for cart items
     static class CartItem {
         private final String name;
-        private final String price;
+        private final double price;
         private int quantity;
         private final String image;
 
-        CartItem(String name, String price, int quantity, String image) {
+        CartItem(String name, double price, int quantity, String image) {
             this.name = name;
             this.price = price;
             this.quantity = quantity;
@@ -88,8 +97,17 @@ public class CartActivity extends AppCompatActivity {
             return name;
         }
 
-        String getPrice() {
+        String getFormattedPrice() {
+            DecimalFormat df = new DecimalFormat("0.00");
+            return "$ " + df.format(price);
+        }
+        
+        double getPrice() {
             return price;
+        }
+        
+        double getTotalPrice() {
+            return price * quantity;
         }
 
         int getQuantity() {
@@ -126,7 +144,7 @@ public class CartActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
             CartItem cartItem = cartItems.get(position);
             holder.foodName.setText(cartItem.getName());
-            holder.foodPrice.setText(cartItem.getPrice());
+            holder.foodPrice.setText(cartItem.getFormattedPrice());
             holder.quantityText.setText(String.valueOf(cartItem.getQuantity()));
             
             // In a real app, you would load images from resources or URLs
