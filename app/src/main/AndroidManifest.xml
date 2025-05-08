@@ -20,9 +20,9 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_GOOGLE_MAPS_API_KEY" />
+            android:value="AIzaSyAEvvUD7NmP3CO8r_7C72kOKE0kPuVrnCc" />
         <!-- Replace YOUR_GOOGLE_MAPS_API_KEY with your actual API key from Google Cloud Console -->
-
+\
         <activity
             android:name=".MainActivity"
             android:exported="true"
