@@ -21,6 +21,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_GOOGLE_MAPS_API_KEY" />
+        <!-- Replace YOUR_GOOGLE_MAPS_API_KEY with your actual API key from Google Cloud Console -->
 
         <activity
             android:name=".MainActivity"
@@ -75,6 +76,11 @@
 
         <activity
             android:name=".ProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.DinezyFinal" />
+
+        <activity
+            android:name=".LocationActivity"
             android:exported="false"
             android:theme="@style/Theme.DinezyFinal" />
 

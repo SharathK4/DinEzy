@@ -4,4 +4,5 @@
     <string name="default_web_client_id">1:981268814521:web:b378b1e3083f9d54a41968</string>
     <string name="app_logo">Dinezy Logo</string>
     <string name="app_tagline">Order food from your favorite restaurants</string>
+    <string name="appbar_scrolling_view_behavior">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>

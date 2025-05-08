@@ -39,6 +39,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation("com.google.android.gms:play-services-maps:18.2.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.core:core:1.12.0")
     implementation("com.google.android.gms:play-services-base:18.3.0")

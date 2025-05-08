@@ -13,12 +13,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -33,9 +36,11 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
     private ImageView locationIcon, profileIcon;
     private BottomNavigationView bottomNavigationView;
     
-    private static final long BANNER_SLIDE_DELAY = 3000; // 3 seconds delay
+    private static final long BANNER_SLIDE_DELAY = 4000; // 4 seconds delay
+    private static final long BANNER_ANIMATION_TIME = 500; // 500ms for animation
     private Handler bannerSlideHandler;
     private Runnable bannerSlideRunnable;
+    private static final int LOCATION_REQUEST_CODE = 1002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +51,7 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
         setupBanner();
         setupPopularFoods();
         setupListeners();
+        setupAppBarScrollListener();
     }
     
     @Override
@@ -87,15 +93,11 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
         BannerAdapter bannerAdapter = new BannerAdapter(bannerImages);
         bannerViewPager.setAdapter(bannerAdapter);
         
-        // Add page transformer for better visual effects
-        CompositePageTransformer transformer = new CompositePageTransformer();
-        transformer.addTransformer(new MarginPageTransformer(40));
-        transformer.addTransformer((page, position) -> {
-            float r = 1 - Math.abs(position);
-            page.setScaleY(0.85f + r * 0.15f);
-        });
+        // Set offscreen page limit to avoid recreation
+        bannerViewPager.setOffscreenPageLimit(3);
         
-        bannerViewPager.setPageTransformer(transformer);
+        // Reduce page transformer sensitivity
+        bannerViewPager.setPageTransformer(new CompositePageTransformer());
         
         // Register page change callback to update dots
         bannerViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -114,7 +116,10 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
                 int currentItem = bannerViewPager.getCurrentItem();
                 int totalItems = bannerAdapter.getItemCount();
                 int nextItem = (currentItem + 1) % totalItems;
+                
+                // Smooth scroll to next item with controlled animation time
                 bannerViewPager.setCurrentItem(nextItem, true);
+                
                 bannerSlideHandler.postDelayed(this, BANNER_SLIDE_DELAY);
             }
         };
@@ -137,10 +142,9 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
         popularFoods.add(new FoodItem("Caesar Salad", "$8.50", "salad"));
         popularFoods.add(new FoodItem("Pasta Carbonara", "$13.99", "pasta"));
 
-        // Set up RecyclerView with horizontal layout
+        // Set up RecyclerView with grid layout (2 columns)
         PopularFoodAdapter adapter = new PopularFoodAdapter(popularFoods, this);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                this, LinearLayoutManager.HORIZONTAL, false);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         popularRecyclerView.setLayoutManager(layoutManager);
         popularRecyclerView.setAdapter(adapter);
     }
@@ -187,22 +191,36 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
     }
 
     private void showLocationDialog() {
-        Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.layout_location_dialog);
-        dialog.setCancelable(true);
-        dialog.setCanceledOnTouchOutside(true);
+        Intent intent = new Intent(HomeActivity.this, LocationActivity.class);
+        startActivityForResult(intent, LOCATION_REQUEST_CODE);
+    }
 
-        // Set dialog width to match parent
-        Window window = dialog.getWindow();
-        if (window != null) {
-            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        
+        if (requestCode == LOCATION_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            // Get the selected location data
+            double latitude = data.getDoubleExtra("latitude", 0);
+            double longitude = data.getDoubleExtra("longitude", 0);
+            String address = data.getStringExtra("address");
+            
+            // Save the location data (e.g., using SharedPreferences)
+            saveLocationToPreferences(latitude, longitude, address);
+            
+            // Show a confirmation toast
+            Toast.makeText(this, "Delivery location updated", Toast.LENGTH_SHORT).show();
         }
-
-        ImageView closeButton = dialog.findViewById(R.id.closeButton);
-        closeButton.setOnClickListener(v -> dialog.dismiss());
-
-        dialog.show();
+    }
+    
+    private void saveLocationToPreferences(double latitude, double longitude, String address) {
+        // Save location data to SharedPreferences
+        getSharedPreferences("user_prefs", MODE_PRIVATE)
+                .edit()
+                .putFloat("latitude", (float) latitude)
+                .putFloat("longitude", (float) longitude)
+                .putString("address", address)
+                .apply();
     }
 
     private void navigateToCart() {
@@ -218,6 +236,37 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
     private void navigateToProfile() {
         Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
         startActivity(intent);
+    }
+
+    private void setupAppBarScrollListener() {
+        AppBarLayout appBarLayout = findViewById(R.id.appBarLayout);
+        NestedScrollView nestedScrollView = findViewById(R.id.nestedScrollView);
+        
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                // Calculate scroll percentage (0 to 1)
+                float scrollPercentage = Math.abs(verticalOffset) / (float) appBarLayout.getTotalScrollRange();
+                
+                // When scrolled more than 75%, stop the banner auto-slide to save resources
+                if (scrollPercentage > 0.75) {
+                    stopBannerAutoSlide();
+                } else if (scrollPercentage < 0.25 && bannerSlideHandler != null) {
+                    // Resume when back at the top
+                    startBannerAutoSlide();
+                }
+            }
+        });
+        
+        // Find the Popular Foods header view
+        TextView popularTitle = findViewById(R.id.popularTitle);
+        
+        if (popularTitle != null) {
+            // When Popular Foods title is clicked, scroll to show popular foods
+            popularTitle.setOnClickListener(v -> {
+                appBarLayout.setExpanded(false, true);
+            });
+        }
     }
 
     @Override
