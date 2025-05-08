@@ -5,8 +5,10 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -14,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Arrays;
 import java.util.List;
+
+import android.view.animation.DecelerateInterpolator;
 
 public class PopularFoodAdapter extends RecyclerView.Adapter<PopularFoodAdapter.FoodViewHolder> {
 
@@ -58,12 +62,33 @@ public class PopularFoodAdapter extends RecyclerView.Adapter<PopularFoodAdapter.
         String colorHex = backgroundColors.get(position % backgroundColors.size());
         holder.cardView.setCardBackgroundColor(Color.parseColor(colorHex));
         
-        // Set click listener
+        // Set click listeners
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onFoodItemClick(foodItem);
             }
         });
+        
+        // Add button click listener
+        holder.addButton.setOnClickListener(v -> {
+            Toast.makeText(context, foodItem.getName() + " added to cart", Toast.LENGTH_SHORT).show();
+            // Here you would implement actual add to cart functionality
+        });
+        
+        // Apply animation to the items
+        setAnimation(holder.itemView, position);
+    }
+    
+    private void setAnimation(View viewToAnimate, int position) {
+        // Only animate items when they first appear
+        viewToAnimate.setTranslationY(50f);
+        viewToAnimate.setAlpha(0f);
+        viewToAnimate.animate()
+                .translationY(0f)
+                .alpha(1f)
+                .setDuration(350)
+                .setInterpolator(new DecelerateInterpolator())
+                .start();
     }
 
     @Override
@@ -75,6 +100,7 @@ public class PopularFoodAdapter extends RecyclerView.Adapter<PopularFoodAdapter.
         TextView foodName, foodPrice;
         ImageView foodImage;
         CardView cardView;
+        Button addButton;
 
         FoodViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +108,7 @@ public class PopularFoodAdapter extends RecyclerView.Adapter<PopularFoodAdapter.
             foodPrice = itemView.findViewById(R.id.foodPrice);
             foodImage = itemView.findViewById(R.id.foodImage);
             cardView = itemView.findViewById(R.id.cardView);
+            addButton = itemView.findViewById(R.id.addButton);
         }
     }
 } 

@@ -68,6 +68,16 @@
             android:exported="false"
             android:theme="@style/Theme.DinezyFinal" />
 
+        <activity
+            android:name=".SearchActivity"
+            android:exported="false"
+            android:theme="@style/Theme.DinezyFinal" />
+
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false"
+            android:theme="@style/Theme.DinezyFinal" />
+
     </application>
 
 </manifest>

@@ -220,34 +220,98 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/categoriesScrollView"
-        android:padding="16dp">
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp">
 
         <TextView
+            android:id="@+id/popularTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:fontFamily="serif"
+            android:fontFamily="@font/albert_sans_bold"
             android:text="Popular Foods"
             android:textColor="#000000"
-            android:textSize="18sp"
+            android:textSize="22sp"
             android:textStyle="bold" />
+            
+        <TextView
+            android:id="@+id/popularDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/popularTitle"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/albert_sans_regular"
+            android:text="Most ordered right now"
+            android:textColor="#666666"
+            android:textSize="14sp" />
 
         <TextView
+            android:id="@+id/viewAllText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:text="01/18"
-            android:textColor="#888888" />
+            android:layout_centerVertical="true"
+            android:fontFamily="@font/albert_sans_bold"
+            android:text="View All"
+            android:textColor="#FF5722"
+            android:textSize="14sp" />
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/popularRecyclerView"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigation"
         android:layout_below="@id/popularHeader"
-        android:clipToPadding="false"
-        android:padding="8dp" />
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/popularRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="16dp" />
+
+            <!-- More food sections can be added here -->
+            <TextView
+                android:id="@+id/recommendedHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/albert_sans_bold"
+                android:text="Recommended For You"
+                android:textColor="#000000"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/albert_sans_regular"
+                android:text="Based on your previous orders"
+                android:textColor="#666666"
+                android:textSize="14sp" />
+
+            <!-- Empty space to ensure scrollability -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="100dp"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"

@@ -3,10 +3,14 @@ package com.example.dinezyfinal;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +32,10 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
     private View dot1, dot2, dot3, dot4, dot5;
     private ImageView locationIcon, profileIcon;
     private BottomNavigationView bottomNavigationView;
+    
+    private static final long BANNER_SLIDE_DELAY = 3000; // 3 seconds delay
+    private Handler bannerSlideHandler;
+    private Runnable bannerSlideRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,18 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
         setupBanner();
         setupPopularFoods();
         setupListeners();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startBannerAutoSlide();
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopBannerAutoSlide();
     }
 
     private void initViews() {
@@ -85,6 +105,27 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
                 updateDots(position);
             }
         });
+        
+        // Initialize banner auto-slide handler and runnable
+        bannerSlideHandler = new Handler(Looper.getMainLooper());
+        bannerSlideRunnable = new Runnable() {
+            @Override
+            public void run() {
+                int currentItem = bannerViewPager.getCurrentItem();
+                int totalItems = bannerAdapter.getItemCount();
+                int nextItem = (currentItem + 1) % totalItems;
+                bannerViewPager.setCurrentItem(nextItem, true);
+                bannerSlideHandler.postDelayed(this, BANNER_SLIDE_DELAY);
+            }
+        };
+    }
+    
+    private void startBannerAutoSlide() {
+        bannerSlideHandler.postDelayed(bannerSlideRunnable, BANNER_SLIDE_DELAY);
+    }
+    
+    private void stopBannerAutoSlide() {
+        bannerSlideHandler.removeCallbacks(bannerSlideRunnable);
     }
 
     private void setupPopularFoods() {
@@ -107,20 +148,30 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
     private void setupListeners() {
         locationIcon.setOnClickListener(v -> showLocationDialog());
         
+        profileIcon.setOnClickListener(v -> navigateToProfile());
+        
+        TextView viewAllText = findViewById(R.id.viewAllText);
+        viewAllText.setOnClickListener(v -> {
+            Toast.makeText(this, "Viewing all popular foods", Toast.LENGTH_SHORT).show();
+            // In a real app, you would navigate to a view with all popular foods
+        });
+        
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.navigation_home) {
                 // Already on home, do nothing
                 return true;
             } else if (itemId == R.id.navigation_search) {
-                // Handle search
+                // Navigate to search
+                navigateToSearch();
                 return true;
             } else if (itemId == R.id.navigation_cart) {
                 // Navigate to cart
                 navigateToCart();
                 return true;
             } else if (itemId == R.id.navigation_profile) {
-                // Handle profile
+                // Navigate to profile
+                navigateToProfile();
                 return true;
             }
             return false;
@@ -156,6 +207,16 @@ public class HomeActivity extends AppCompatActivity implements PopularFoodAdapte
 
     private void navigateToCart() {
         Intent intent = new Intent(HomeActivity.this, CartActivity.class);
+        startActivity(intent);
+    }
+
+    private void navigateToSearch() {
+        Intent intent = new Intent(HomeActivity.this, SearchActivity.class);
+        startActivity(intent);
+    }
+    
+    private void navigateToProfile() {
+        Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
         startActivity(intent);
     }
 

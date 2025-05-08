@@ -68,7 +68,11 @@ public class LoginActivity extends AppCompatActivity {
         if (mAuth != null) {
             FirebaseUser currentUser = mAuth.getCurrentUser();
             if(currentUser != null) {
-                navigateToHome();
+                // Instead of auto-navigating, show a message that the user is already logged in
+                // and give them a button to proceed
+                Toast.makeText(this, "Welcome back " + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
+                // Uncomment the line below to auto-navigate
+                // navigateToHome();
             }
         }
     }
@@ -90,7 +94,6 @@ public class LoginActivity extends AppCompatActivity {
         continueButton.setOnClickListener(v -> {
             // In a real app, you would validate and authenticate the user with phone number
             Toast.makeText(LoginActivity.this, "Phone auth would be implemented here", Toast.LENGTH_SHORT).show();
-            // For now, just navigate to home as a fallback
             navigateToHome();
         });
 
@@ -101,15 +104,12 @@ public class LoginActivity extends AppCompatActivity {
             } catch (Exception e) {
                 Log.e(TAG, "Error starting Google Sign-In", e);
                 Toast.makeText(this, "Error with Google Sign-In: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                // Fallback to direct navigation if Google Sign-In fails
-                navigateToHome();
             }
         });
 
         emailSignInButton.setOnClickListener(v -> {
             // In a real app, you would show email sign-in UI
             Toast.makeText(LoginActivity.this, "Email Sign In clicked", Toast.LENGTH_SHORT).show();
-            // For now, just navigate to home as a fallback
             navigateToHome();
         });
 
@@ -141,15 +141,11 @@ public class LoginActivity extends AppCompatActivity {
                     // Google Sign In failed, update UI appropriately
                     Log.w(TAG, "Google sign in failed", e);
                     Toast.makeText(this, "Google Sign In failed. Error code: " + e.getStatusCode(), Toast.LENGTH_SHORT).show();
-                    // Fall back to direct navigation
-                    navigateToHome();
                 }
             }
         } catch (Exception e) {
             Log.e(TAG, "Unexpected error in onActivityResult", e);
             Toast.makeText(this, "Authentication error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            // Fall back to direct navigation
-            navigateToHome();
         }
     }
     
@@ -171,16 +167,12 @@ public class LoginActivity extends AppCompatActivity {
                                 Toast.makeText(LoginActivity.this, "Authentication Failed: " + 
                                         (task.getException() != null ? task.getException().getMessage() : "Unknown error"), 
                                         Toast.LENGTH_SHORT).show();
-                                // Fall back to direct navigation
-                                navigateToHome();
                             }
                         }
                     });
         } catch (Exception e) {
             Log.e(TAG, "Error during Firebase authentication", e);
             Toast.makeText(this, "Firebase auth error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-            // Fall back to direct navigation
-            navigateToHome();
         }
     }
 
